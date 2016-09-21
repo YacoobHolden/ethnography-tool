@@ -3,3 +3,66 @@
 @import url('bootstrap.css');
 
 /* Page CSS */
+html {
+	background: #f6f7fa;
+}
+
+#main {
+	padding: 10px;
+	box-sizing: border-box;
+	background: #f6f7fa;
+}
+
+#form .form-row {
+	border-radius: 4px;
+	color: black;
+	background-color: #fff;
+	border: 1px solid grey;
+	padding: 5px;
+	height: 14vh;
+	width: 100%;
+	box-sizing: border-box;
+	margin-bottom: 1vh;
+}
+
+#form .form-row .question {
+	display: block;
+	height: 25%;
+	font-size: 15px;
+	text-align: center;
+}
+
+#form .form-row .options {
+	height: 75%;
+    display: table;
+    table-layout: fixed;
+	width: 100%;
+}
+
+#form .form-row .options .form-col {
+	display: table-cell;
+	text-align: center;
+}
+
+#form .form-row .options .form-col:not(:last-child) {
+	border-right: 1px solid #e5e5e5;
+}
+
+#form .form-row .options .form-col .col-top {
+	display: block;
+	height: 60%;
+}
+
+#form .form-row .options .form-col .col-bottom {
+	display: block;
+	height: 40%;
+}
+
+#form .form-row .options .form-col .col-top .icon {
+	font-size: 20px;
+}
+
+#form .form-row .options .form-col .col-bottom .bottom-text {
+	font-size: 10px;
+}
+
