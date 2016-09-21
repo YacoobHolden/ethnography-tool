@@ -8,11 +8,12 @@ html {
 }
 
 #main {
-	padding: 10px;
+	padding: 1vh 1vw 1vh 1vw;
 	box-sizing: border-box;
 	background: #f6f7fa;
 }
 
+/* Form Section */
 #form .form-row {
     border-radius: 4px;
     color: black;
@@ -67,7 +68,24 @@ html {
 	font-size: 2vh;
 }
 
-/*Main CSS*/
+/* Complete Section */
+#complete {
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+	margin-top: 2vh;
+}
+#complete .button-wrapper {
+	display: table-cell;
+	text-align: center;
+}
+
+#complete .button-wrapper .done-button {
+	width: 20vw;
+	border-radius: 4px;
+}
+
+/* Mobile CSS */
 @media only screen and (max-device-width: 767px) {
 	#form .form-row .options .form-col .col-top .icon.smaller {
 		font-size: 4vh;
