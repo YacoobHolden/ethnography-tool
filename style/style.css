@@ -67,3 +67,15 @@ html {
 	font-size: 2vh;
 }
 
+/*Main CSS*/
+@media only screen and (max-device-width: 767px) {
+	#form .form-row .options .form-col .col-top .icon.smaller {
+		font-size: 4vh;
+	}
+	
+	#form .form-row .options .form-col .col-bottom .bottom-text.smaller {
+		font-size: 1vh;
+		vertical-align: top;
+	}
+}
+
