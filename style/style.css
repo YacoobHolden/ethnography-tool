@@ -14,26 +14,27 @@ html {
 }
 
 #form .form-row {
-	border-radius: 4px;
-	color: black;
-	background-color: #fff;
-	border: 1px solid grey;
-	padding: 5px;
-	height: 14vh;
-	width: 100%;
-	box-sizing: border-box;
-	margin-bottom: 1vh;
+    border-radius: 4px;
+    color: black;
+    background-color: #fff;
+    border: 1px solid grey;
+    padding: 1vh;
+    height: 14vh;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 1vh;
+    min-height: 70px;
 }
 
 #form .form-row .question {
 	display: block;
-	height: 25%;
-	font-size: 15px;
+	height: 4vh;
+	font-size: 2vh;
 	text-align: center;
 }
 
 #form .form-row .options {
-	height: 75%;
+	height: 8vh;
     display: table;
     table-layout: fixed;
 	width: 100%;
@@ -50,19 +51,19 @@ html {
 
 #form .form-row .options .form-col .col-top {
 	display: block;
-	height: 60%;
+	height: 5vh;
 }
 
 #form .form-row .options .form-col .col-bottom {
 	display: block;
-	height: 40%;
+	height: 3vh
 }
 
 #form .form-row .options .form-col .col-top .icon {
-	font-size: 20px;
+	font-size: 5vh;
 }
 
 #form .form-row .options .form-col .col-bottom .bottom-text {
-	font-size: 10px;
+	font-size: 2vh;
 }
 
