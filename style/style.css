@@ -253,7 +253,7 @@ body {
 
 /* Overlay */
 #overlay {
-	background: rgba(200, 200, 200 ,0.8);
+	background: rgba(240, 240, 240 ,0.8);
 	position: absolute;
 	top: 0px;
 	left: 0px;
