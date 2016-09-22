@@ -16,6 +16,47 @@ $(document).ready(function() {
 			self.showPage("main");
 			self.areas.removeClass("active");
 			$("#"+id).addClass("active");
+		},
+		// Gets result data from UI
+		getResults: function(){
+			var self = this,
+				result = {};
+				form = $('#form');
+
+			// Add initial values from form
+			form.find('.form-row').each(function(){
+				var row = $(this),
+					field = row.data("field"),
+					allowMulti = row.hasClass('allow-multi'),
+					activeCols = row.find(".form-col.selected");
+				
+				// Only add if set - otherwise set as empty
+				if (activeCols.length > 0){
+					if (allowMulti) {
+						activeCols.each(function(){
+							result[$(this).data("value")] = true;
+						});
+					} else {
+						result[field] = $(activeCols).data("value");
+					}
+				} else {
+					result[field] = {};
+				}
+			});
+			
+			// Add other values
+			var date = $(".date").datepicker("getDate");
+			if (!date){
+				date = new Date();
+			}
+			var time = $(".time").timepicker('getTime');
+			if (!time){
+				time = new Date();
+			}
+			result.Username = currentUser.name;
+			result.Entry_DateTime = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + "T" + time.getHours() + ":" + time.getMinutes()  + ":00:000Z";
+			
+			return result;
 		}
 	},
 	// Auth Helper - shortcuts to authentication functions
@@ -58,34 +99,6 @@ $(document).ready(function() {
 	// Request Helper
 	requests = {
 		apiUrl: "http://hciwebapp.azurewebsites.net/api",
-		// Format data for the API - currently needs processing
-		adaptNewFormData: function(data){
-			var self = this;
-			
-			// Convert "Now" to time
-			if (data.time === "Now"){
-				data.time = new Date();
-			}
-			
-			// Combine data and time
-			var date = data.date,
-				time = data.time;
-			data.entry_date_time = Date.parse(date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + time.getHours() + ":" + time.getMinutes()  + ":00");
-			delete data.date;
-			delete data.time;
-		
-			// Extract vars from objects
-			for (var key in data){
-				var curObj = data[key];
-				if ($.isPlainObject(curObj)){
-					for (var objKey in curObj){
-						// @todo - handle key already exists
-						data[objKey] = curObj[objKey];
-					}
-					delete data[key];
-				}
-			}
-		},
 		// Add new form using data
 		addNewForm: function(data, callback){
 			var self = this;
@@ -93,19 +106,37 @@ $(document).ready(function() {
 			$.ajax({
 				url: self.apiUrl + "/DataModels",
 				method: "POST",
- 			   	data: data,
-  			  	dataType: "json"
-			}).done(function(result) {
-  				callback && callback(result);
+ 			   	data:  JSON.stringify(data),
+  			  	dataType: "json",
+				contentType: 'application/json',
+				processData: false
+			}).done(function(returned) {
+  				callback && callback(returned);
 		  	}).fail(function(error) {
   				callback && callback(error);
 			});
+			
+			/*
+			var xhr = new XMLHttpRequest();
+			var url = self.apiUrl + "/DataModels";
+			var params = JSON.stringify(data);
+
+			xhr.open("POST", url, true);
+			xhr.setRequestHeader("Content-type", "application/json");
+			xhr.onload = function () {
+				if (xhr.status == 201){
+					callback && callback(true);
+				} else {
+					callback && callback(false);
+				}
+			};
+			xhr.send(params);
+			*/
 		}
 	},
 	// Other helpers & stores
 	OAuth.initialize('utST7PNGeZd9L1lVvKUrwVHykrU');
-	var result = {},
-		currentUser,
+	var currentUser,
 		oauthClient;	
 
 	/*
@@ -142,14 +173,6 @@ $(document).ready(function() {
 		disableTouchKeyboard: true
 	});
 	date.datepicker('update', new Date());
-	result.date = new Date();
-	date.on("change",function(){
-		var chosenDate = date.datepicker("getDate");
-		if (!chosenDate){
-			chosenDate = new Date();
-		}
-		result.date = chosenDate;
-	});
 	// Timepicker
 	time.timepicker({
 		'noneOption': [
@@ -160,14 +183,6 @@ $(document).ready(function() {
 		 ]
 	});
 	time.timepicker('setTime', 'Now');
-	result.time = "Now";
-	time.on("change",function(){
-		var chosenTime = time.timepicker('getTime');
-		if (!chosenTime){
-			chosenTime = "Now";
-		}
-		result.time = chosenTime;
-	});
 	// Add change area
 	var areaChangers = $('.to-area');
 	areaChangers.on("click", function(){
@@ -186,16 +201,11 @@ $(document).ready(function() {
 	var form = $('#form');
 	form.find('.form-row').each(function(){
 		var row = $(this),
-			field = row.data('field'),
 			cols = row.find('.form-col'),
 			allowMulti = row.hasClass('allow-multi');
 		
-		// Set value in object so we can validate later
-		result[field] = {};
-	
 		cols.each(function(){
-			var col = $(this),
-				value = col.data("value");
+			var col = $(this);
 		
 			col.on("click",function(){
 				// Handle unset
@@ -203,21 +213,13 @@ $(document).ready(function() {
 					// Handle multi-options
 					if (allowMulti){
 						col.addClass("selected");
-						result[field][value] = true;
 					} else {
 						cols.removeClass("selected");
 						col.addClass("selected");
-						result[field] = value;
 					}
 				} else {
 					// Handle multi-options
-					if (allowMulti){
-						col.removeClass("selected");
-						delete result[field][value];
-					} else {
-						col.removeClass("selected");
-						result[field] = undefined;
-					}
+					col.removeClass("selected");
 				}
 				// Remove error marking
 				row.removeClass("error-row");
@@ -228,7 +230,8 @@ $(document).ready(function() {
 	// Handle done
 	$("#done").on("click",function(){
 		// Validate results
-		var error = false,
+		var result = ui.getResults(),
+			error = false,
 			keys = Object.keys(result);
 		
 		for (var index in keys){
@@ -246,7 +249,6 @@ $(document).ready(function() {
 		}
 		
 		// Convert to result expected by API
-		requests.adaptNewFormData(result);
 		console.log(JSON.stringify(result));
 		
 		// Pass result to API
@@ -264,6 +266,7 @@ $(document).ready(function() {
 	/*
 	* Main Page Logic
 	*/
+	$.support.cors = true;
 	auth.getCurrentUser(function(success){
 		if (success){
 			ui.showPage('main');
