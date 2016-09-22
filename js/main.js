@@ -272,7 +272,6 @@ $(document).ready(function() {
 		if (success){
 			ui.showPage('main');
 		} else {
-			ui.flashOverlay("error");
 			ui.showPage('login');
 		}
 	});
