@@ -57,7 +57,38 @@ $(document).ready(function() {
 	},
 	// Request Helper
 	requests = {
+		apiUrl: "http://hciwebapp.azurewebsites.net/api",
+		// Format data for the API - currently needs processing
+		adaptNewFormData: function(data){
+			var self = this;
 		
+			// Extract vars from objects
+			for (var key in data){
+				var curObj = data[key];
+				if (curObj !== null && typeof curObj === 'object'){
+					for (var objKey in curObj){
+						// @todo - handle key already exists
+						data[objKey] = curObj[objKey];
+					}
+					delete data[key];
+				}
+			}
+		},
+		// Add new form using data
+		addNewForm: function(data, callback){
+			var self = this;
+			
+			$.ajax({
+				url: self.apiUrl + "/DataModels",
+				method: "POST",
+ 			   	data: data,
+  			  	dataType: "json"
+			}).done(function(result) {
+  				callback && callback(result);
+		  	}).fail(function(error) {
+  				callback && callback(error);
+			});
+		}
 	},
 	// Other helpers & stores
 	OAuth.initialize('utST7PNGeZd9L1lVvKUrwVHykrU');
@@ -187,10 +218,10 @@ $(document).ready(function() {
 		}
 		
 		// Convert to result expected by API
-		
-		
-		// Pass result to API
+		requests.adaptNewFormData(result);
 		console.log(JSON.stringify(result));
+		// Pass result to API
+		requests.addNewForm(result);
 	});
 	
 	/*
