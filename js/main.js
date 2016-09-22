@@ -64,6 +64,19 @@ $(document).ready(function() {
 				":" + self.oformat(time.getMinutes())  + ":00.000Z";
 			
 			return result;
+		},
+		flashOverlay: function(type, time){
+			var self = this,
+				overlay = $("#overlay"),
+				time = time || 1000,
+				type = type || "success";
+				
+			overlay.show();
+			overlay.find(".overlay-icon").hide();
+			overlay.find("." + type).show();
+			setTimeout(function(){
+				overlay.fadeOut("slow");
+			}, time);
 		}
 	},
 	// Auth Helper - shortcuts to authentication functions
@@ -139,6 +152,7 @@ $(document).ready(function() {
 			if (success){
 				ui.showPage('main');
 			} else {
+				ui.flashOverlay("error");
 				ui.showPage('login');
 			}
 		});
@@ -243,9 +257,9 @@ $(document).ready(function() {
 		requests.addNewForm(result, function(success){
 			ui.showPage('main');
 			if (success){
-				
+				ui.flashOverlay("success");
 			} else {
-				
+				ui.flashOverlay("error");
 			}
 		});
 	});
@@ -258,6 +272,7 @@ $(document).ready(function() {
 		if (success){
 			ui.showPage('main');
 		} else {
+			ui.flashOverlay("error");
 			ui.showPage('login');
 		}
 	});
