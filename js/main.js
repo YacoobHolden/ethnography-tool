@@ -54,7 +54,7 @@ $(document).ready(function() {
 				time = new Date();
 			}
 			result.Username = currentUser.name;
-			result.Entry_DateTime = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + "T" + time.getHours() + ":" + time.getMinutes()  + ":00:000Z";
+			result.Entry_DateTime = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + "T" + time.getHours() + ":" + time.getMinutes()  + ":00.000Z";
 			
 			return result;
 		}
