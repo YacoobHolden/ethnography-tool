@@ -61,11 +61,23 @@ $(document).ready(function() {
 		// Format data for the API - currently needs processing
 		adaptNewFormData: function(data){
 			var self = this;
+			
+			// Convert "Now" to time
+			if (data.time === "Now"){
+				data.time = new Date();
+			}
+			
+			// Combine data and time
+			var date = data.date,
+				time = data.time;
+			data.entry_date_time = Date.parse(date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + " " + time.getHours() + ":" + time.getMinutes()  + ":00");
+			delete data.date;
+			delete data.time;
 		
 			// Extract vars from objects
 			for (var key in data){
 				var curObj = data[key];
-				if (curObj !== null && typeof curObj === 'object'){
+				if ($.isPlainObject(curObj)){
 					for (var objKey in curObj){
 						// @todo - handle key already exists
 						data[objKey] = curObj[objKey];
@@ -130,6 +142,14 @@ $(document).ready(function() {
 		disableTouchKeyboard: true
 	});
 	date.datepicker('update', new Date());
+	result.date = new Date();
+	date.on("change",function(){
+		var chosenDate = date.datepicker("getDate");
+		if (!chosenDate){
+			chosenDate = new Date();
+		}
+		result.date = chosenDate;
+	});
 	// Timepicker
 	time.timepicker({
 		'noneOption': [
@@ -140,6 +160,14 @@ $(document).ready(function() {
 		 ]
 	});
 	time.timepicker('setTime', 'Now');
+	result.time = "Now";
+	time.on("change",function(){
+		var chosenTime = time.timepicker('getTime');
+		if (!chosenTime){
+			chosenTime = "Now";
+		}
+		result.time = chosenTime;
+	});
 	// Add change area
 	var areaChangers = $('.to-area');
 	areaChangers.on("click", function(){
@@ -205,7 +233,7 @@ $(document).ready(function() {
 		
 		for (var index in keys){
 			var key = keys[index];
-			if ($.isEmptyObject(result[key])){
+			if ($.isPlainObject(result[key]) && $.isEmptyObject(result[key])){
 				var errorRow = form.find('.form-row[data-field="' + key + '"]');
 				errorRow.addClass("error-row");
 				error = true;
@@ -220,8 +248,17 @@ $(document).ready(function() {
 		// Convert to result expected by API
 		requests.adaptNewFormData(result);
 		console.log(JSON.stringify(result));
+		
 		// Pass result to API
-		requests.addNewForm(result);
+		ui.showPage('loader');
+		requests.addNewForm(result, function(success){
+			ui.showPage('main');
+			if (success){
+				
+			} else {
+				
+			}
+		});
 	});
 	
 	/*
