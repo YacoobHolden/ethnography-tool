@@ -17,6 +17,12 @@ $(document).ready(function() {
 			self.areas.removeClass("active");
 			$("#"+id).addClass("active");
 		},
+		oformat: function(value){
+			if (parseInt(value) < 10){
+				return "0"+value;
+			}
+			return value;
+		},
 		// Gets result data from UI
 		getResults: function(){
 			var self = this,
@@ -54,7 +60,8 @@ $(document).ready(function() {
 				time = new Date();
 			}
 			result.Username = currentUser.name;
-			result.Entry_DateTime = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + "T" + time.getHours() + ":" + time.getMinutes()  + ":00.000Z";
+			result.Entry_DateTime = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate() + "T" + self.oformat(time.getHours()) + 
+				":" + self.oformat(time.getMinutes())  + ":00.000Z";
 			
 			return result;
 		}
@@ -98,7 +105,7 @@ $(document).ready(function() {
 	},
 	// Request Helper
 	requests = {
-		apiUrl: "http://hciwebapp.azurewebsites.net/api",
+		apiUrl: "https://hciwebapp.azurewebsites.net/api",
 		// Add new form using data
 		addNewForm: function(data, callback){
 			var self = this;
@@ -115,23 +122,6 @@ $(document).ready(function() {
 		  	}).fail(function(error) {
   				callback && callback(error);
 			});
-			
-			/*
-			var xhr = new XMLHttpRequest();
-			var url = self.apiUrl + "/DataModels";
-			var params = JSON.stringify(data);
-
-			xhr.open("POST", url, true);
-			xhr.setRequestHeader("Content-type", "application/json");
-			xhr.onload = function () {
-				if (xhr.status == 201){
-					callback && callback(true);
-				} else {
-					callback && callback(false);
-				}
-			};
-			xhr.send(params);
-			*/
 		}
 	},
 	// Other helpers & stores
@@ -229,7 +219,7 @@ $(document).ready(function() {
 	
 	// Handle done
 	$("#done").on("click",function(){
-		// Validate results
+		// Get and validate results
 		var result = ui.getResults(),
 			error = false,
 			keys = Object.keys(result);
@@ -247,9 +237,6 @@ $(document).ready(function() {
 		if (error){
 			return;
 		}
-		
-		// Convert to result expected by API
-		console.log(JSON.stringify(result));
 		
 		// Pass result to API
 		ui.showPage('loader');
