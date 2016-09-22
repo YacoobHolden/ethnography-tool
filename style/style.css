@@ -44,6 +44,11 @@ body {
     min-height: 70px;
 }
 
+#form .form-row.error-row {
+	border: 1px solid #ff0000;
+	background-color: #ffe6e6;
+}
+
 #form .form-row .question {
 	display: block;
 	height: 4vh;
