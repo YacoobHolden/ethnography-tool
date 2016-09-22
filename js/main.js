@@ -1,6 +1,28 @@
 $(document).ready(function() {
 	// Object to store results
 	var result = {};
+	
+	// Setup topbar
+	var topbar = $('#topbar'),
+		date = topbar.find(".date"),
+		time = topbar.find(".time");
+
+	// Datepicker
+	date.datepicker({
+		format: 'dd/mm/yyyy',
+		autoclose: true
+	});
+	date.datepicker('update', new Date());
+	// Timepicker
+	time.timepicker({
+		'noneOption': [
+			{
+				'label': 'Now',
+				'value': 'Now'
+			}
+		 ]
+	});
+	time.timepicker('setTime', 'Now');
 
 	// Handle form events
 	var form = $('#form');

@@ -1,6 +1,8 @@
 /* Import External CSS */
 @import url('font-awesome-4.6.3/css/font-awesome.min.css');
 @import url('bootstrap.css');
+@import url('bootstrap-datepicker.min.css');
+@import url('jquery.timepicker.css');
 
 /* Page CSS */
 html {
@@ -23,6 +25,56 @@ body {
 	 margin-bottom: 2vh;
 	 -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
 	 box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+	 width: 100%;
+	 padding: 1.5vh 1vh 0.5vh 1vh;
+}
+
+#topbar .topbar-col {
+	display: inline-block;
+	text-align: center;
+}
+#topbar .topbar-col.date-col {
+	width: 30%;
+}
+#topbar .topbar-col.time-col {
+	width: 30%;
+}
+#topbar .topbar-col.stats-col {
+	width: 12%;
+}
+#topbar .topbar-col.ethno-col {
+	width: 12%;
+}
+#topbar .topbar-col.help-col {
+	width: 10%;
+	float: right;
+}
+
+#topbar .topbar-col:not(:last-child) {
+	border-right: 1px solid #e5e5e5;
+}
+
+#topbar .topbar-col .col-top {
+	display: block;
+	height: 5vh;
+	font-size: 1.9vh;
+}
+
+#topbar .topbar-col .col-bottom {
+	display: block;
+	height: 3vh;
+	font-size: 1.9vh;
+}
+
+#topbar .topbar-col .col-top .icon {
+	font-size: 4vh;
+}
+
+#topbar input {
+    border: 1px solid #e5e5e5;
+    border-radius: 2px;
+    text-align: center;
+	max-width: 90%;
 }
 
 /* Form Section */
@@ -115,7 +167,7 @@ body {
 }
 
 /* Mobile CSS */
-@media only screen and (max-device-width: 767px) {
+@media only screen and (max-device-width: 950px) {
 	#form .form-row .options .form-col .col-top .icon.smaller {
 		font-size: 4vh;
 	}

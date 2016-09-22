@@ -12,12 +12,53 @@
 		
 		<script src="js/jquery-1.9.1.min.js"></script>
 		<script src="js/bootstrap.js"></script>
+		<script src="js/bootstrap-datepicker.min.js"></script>
+		<script src="js/jquery.timepicker.min.js"></script>
 		<script src="js/main.js"></script>
 	</head>
 	<body>
 		<div id="main" class="col-md-12">
 			<div id="topbar">
-				
+				<div class="topbar-col date-col" data-value="date">
+					<div class="col-top">
+						<input class="date"></input>
+					</div>
+					<div class="col-bottom">
+						<span class="bottom-text">Date</span>
+					</div>
+				</div>
+				<div class="topbar-col time-col" data-value="time">
+					<div class="col-top">
+						<input class="time"></input>
+					</div>
+					<div class="col-bottom">
+						<span class="bottom-text">Time</span>
+					</div>
+				</div>
+				<div class="topbar-col stats-col">
+					<div class="col-top">
+						<i class="fa fa-pie-chart icon"></i>
+					</div>
+					<div class="col-bottom">
+						<span class="bottom-text">Stats</span>
+					</div>
+				</div>
+				<div class="topbar-col ethno-col">
+					<div class="col-top">
+						<i class="fa fa-book icon"></i>
+					</div>
+					<div class="col-bottom">
+						<span class="bottom-text">Ethno</span>
+					</div>
+				</div>
+				<div class="topbar-col help-col">
+					<div class="col-top">
+						<i class="fa fa-question-circle icon"></i>
+					</div>
+					<div class="col-bottom">
+						<span class="bottom-text">Help</span>
+					</div>
+				</div>
 			</div>
 			<div id="form">
 				<!--Device type entry-->
