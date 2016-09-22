@@ -32,8 +32,8 @@
 				</div>
 			</div>
 		</div>
-		<!-- Main form page -->
-		<div id="main" class="page col-md-12">
+		<!-- Main page -->
+		<div id="main" class="page">
 			<div id="topbar">
 				<div class="topbar-col date-col" data-value="date">
 					<div class="col-top">
@@ -51,7 +51,7 @@
 						<span class="bottom-text">Time</span>
 					</div>
 				</div>
-				<div class="topbar-col stats-col">
+				<div class="topbar-col stats-col to-area" data-area="stats">
 					<div class="col-top">
 						<i class="fa fa-pie-chart icon"></i>
 					</div>
@@ -59,15 +59,23 @@
 						<span class="bottom-text">Stats</span>
 					</div>
 				</div>
-				<div class="topbar-col ethno-col">
+				<div class="topbar-col ethno-col to-area" data-area="ethno">
 					<div class="col-top">
 						<i class="fa fa-book icon"></i>
 					</div>
 					<div class="col-bottom">
-						<span class="bottom-text">Ethno</span>
+						<span class="bottom-text">Daily</span>
 					</div>
 				</div>
-				<div class="topbar-col help-col">
+				<div class="topbar-col form-col to-area active" data-area="form">
+					<div class="col-top">
+						<i class="fa fa-check-square-o icon"></i>
+					</div>
+					<div class="col-bottom">
+						<span class="bottom-text">Form</span>
+					</div>
+				</div>
+				<div class="topbar-col help-col to-area" data-area="help">
 					<div class="col-top">
 						<i class="fa fa-question-circle icon"></i>
 					</div>
@@ -76,7 +84,7 @@
 					</div>
 				</div>
 			</div>
-			<div id="form">
+			<div id="form" class="area active">
 				<!--Device type entry-->
 				<div class="form-row" data-field="device_type">
 					<div class="question">Select the device you intend to use</div>
@@ -283,12 +291,18 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div id="complete">
-				<div class="button-wrapper">
-					<button id="done" class="btn btn-success done-button">Done</button>
+				<div id="complete">
+					<div class="button-wrapper">
+						<button id="done" class="btn btn-success done-button">Done</button>
+					</div>
 				</div>
 			</div>
+			<!-- Ethno area -->
+			<div id="ethno" class="area"></div>
+			<!-- Help area -->
+			<div id="help" class="area"></div>
+			<!-- Stats area -->
+			<div id="stats" class="area"></div>
 		</div>
 		<!-- Loader page -->
 		<div id="loader" class="page active">

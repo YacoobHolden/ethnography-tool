@@ -1,17 +1,24 @@
 $(document).ready(function() {
-	// Add utility functions
-	var pages = $('.page');
+	/*
+	* Add utility functions
+	*/
+	// Functions to change pages and areas
+	var pages = $('.page'),
+		areas = $('.area');
 	function showPage(id){
 		pages.removeClass("active");
 		$("#"+id).addClass("active");
 	};
-	
+	function showArea(id){
+		showPage("main");
+		areas.removeClass("active");
+		$("#"+id).addClass("active");
+	};
 	// Setup required objects
 	OAuth.initialize('utST7PNGeZd9L1lVvKUrwVHykrU');
 	var result = {},
 		currentUser,
 		oauthClient;
-	
 	// Loads current user and checks if we have token - @todo add error handling
 	function getCurrentUser(callback){
 		var res = OAuth.create('google');
@@ -47,7 +54,29 @@ $(document).ready(function() {
 		});
 	};
 	
-	// Setup topbar
+	/*
+	* Setup Login Page
+	*/
+	// Add login button
+	$('#login-button').on("click",function(){
+		showPage('loader');
+		googleOauth(function(success){
+			if (success){
+				showPage('main');
+			} else {
+				showPage('login');
+			}
+		});
+	});
+	
+	/*
+	* Setup Main Page
+	* Done by area
+	*/
+	
+	/*
+	* Setup Topbar Area
+	*/
 	var topbar = $('#topbar'),
 		date = topbar.find(".date"),
 		time = topbar.find(".time");
@@ -69,7 +98,20 @@ $(document).ready(function() {
 		 ]
 	});
 	time.timepicker('setTime', 'Now');
+	// Add change area
+	var areaChangers = $('.to-area');
+	areaChangers.on("click", function(){
+		var $this = $(this),
+			toArea = $this.data("area");
+		
+		areaChangers.removeClass("active");
+		$this.addClass("active");
+		showArea(toArea);
+	})
 
+	/*
+	* Setup Form Area
+	*/
 	// Handle form events
 	var form = $('#form');
 	form.find('.form-row').each(function(){
@@ -140,19 +182,9 @@ $(document).ready(function() {
 		console.log(JSON.stringify(result));
 	});
 	
-	// Add login button
-	$('#login-button').on("click",function(){
-		showPage('loader');
-		googleOauth(function(success){
-			if (success){
-				showPage('main');
-			} else {
-				showPage('login');
-			}
-		});
-	});
-	
-	// Main page logic
+	/*
+	* Main Page Logic
+	*/
 	getCurrentUser(function(success){
 		if (success){
 			showPage('main');

@@ -8,18 +8,17 @@
 html {
 	background: #f6f7fa;
 }
-
 body {
 	font-family: 'Poppins', sans-serif;
 	background: #f6f7fa;
 }
-
 .page {
 	display: none;
 }
 .page.active {
-	display: initial;
+	display: block;
 }
+
 /* Login Page */
 #login {
 	background: #f6f7fa;
@@ -53,7 +52,7 @@ body {
 	background: #f6f7fa;
 }
 
-/* Topbar Section */
+/* Topbar Area */
 #topbar {
 	 background-color: #fff;
 	 height: 10vh;
@@ -72,16 +71,19 @@ body {
 	width: 30%;
 }
 #topbar .topbar-col.time-col {
-	width: 30%;
+	width: 20%;
+}
+#topbar .topbar-col.form-col {
+	width: 11%;
 }
 #topbar .topbar-col.stats-col {
-	width: 12%;
+	width: 11%;
 }
 #topbar .topbar-col.ethno-col {
-	width: 12%;
+	width: 11%;
 }
 #topbar .topbar-col.help-col {
-	width: 10%;
+	width: 9%;
 	float: right;
 }
 
@@ -100,10 +102,17 @@ body {
 	height: 3vh;
 	font-size: 1.9vh;
 }
+#topbar .topbar-col.active .col-bottom {
+	font-weight: bold;
+}
 
 #topbar .topbar-col .col-top .icon {
 	font-size: 3.5vh;
 	color: grey;
+}
+#topbar .topbar-col.active .col-top .icon {
+	font-size: 4vh;
+	color: black;
 }
 
 #topbar input {
@@ -113,7 +122,15 @@ body {
 	max-width: 90%;
 }
 
-/* Form Section */
+/* General Area Section */
+.area {
+	display: none;
+}
+.area.active {
+	display: block;
+}
+
+/* Form Area */
 #form {
 	padding: 1vh 2vw 1vh 2vw;
 	box-sizing: border-box;
@@ -185,7 +202,6 @@ body {
 	font-size: 1.9vh;
 }
 
-/* Complete Section */
 #complete {
 	display: table;
 	table-layout: fixed;
@@ -200,6 +216,21 @@ body {
 #complete .button-wrapper .done-button {
 	width: 20vw;
 	border-radius: 4px;
+}
+
+/* Ethno Area */
+#ethno {
+	
+}
+
+/* Help Area */
+#help {
+	
+}
+
+/* Stats Area */
+#stats {
+	
 }
 
 /* Loader Page */
