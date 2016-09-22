@@ -7,6 +7,7 @@
 		<meta name="description" content="">
 		<meta name="viewport" content="width=device-width initial-scale=1.0">
 		
+		<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 		<link rel="stylesheet" href="style/style.css">
 		
 		<script src="js/jquery-1.9.1.min.js"></script>
@@ -15,9 +16,10 @@
 	</head>
 	<body>
 		<div id="main" class="col-md-12">
+			<div id="topbar">
+				
+			</div>
 			<div id="form">
-				<!--Row to show autodetected data-->
-				<div class="form-row" data-field="auto"></div>
 				<!--Device type entry-->
 				<div class="form-row" data-field="device_type">
 					<div class="question">Select the device you intend to use</div>
@@ -163,7 +165,7 @@
 					</div>
 				</div>
 				<!--Intention entry-->
-				<div class="form-row" data-field="intention">
+				<div class="form-row allow-multi" data-field="intention">
 					<div class="question">Select how you are using the device</div>
 					<div class="options">
 						<div class="form-col" data-value="messaging">

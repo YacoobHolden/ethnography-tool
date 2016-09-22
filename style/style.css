@@ -7,13 +7,30 @@ html {
 	background: #f6f7fa;
 }
 
+body {
+	font-family: 'Poppins', sans-serif;
+}
+
 #main {
-	padding: 1vh 1vw 1vh 1vw;
-	box-sizing: border-box;
+	padding: 0px;
 	background: #f6f7fa;
 }
 
+/* Topbar Section */
+#topbar {
+	 background-color: #fff;
+	 height: 10vh;
+	 margin-bottom: 2vh;
+	 -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+	 box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
 /* Form Section */
+#form {
+	padding: 1vh 2vw 1vh 2vw;
+	box-sizing: border-box;
+}
+
 #form .form-row {
     border-radius: 4px;
     color: black;
@@ -32,6 +49,7 @@ html {
 	height: 4vh;
 	font-size: 2vh;
 	text-align: center;
+	color: grey;
 }
 
 #form .form-row .options {
@@ -44,6 +62,12 @@ html {
 #form .form-row .options .form-col {
 	display: table-cell;
 	text-align: center;
+}
+
+#form .form-row .options .form-col.selected {
+	border-radius: 5px;
+	background-color: #e9fee7;
+	color: #008000;
 }
 
 #form .form-row .options .form-col:not(:last-child) {
@@ -65,7 +89,7 @@ html {
 }
 
 #form .form-row .options .form-col .col-bottom .bottom-text {
-	font-size: 2vh;
+	font-size: 1.9vh;
 }
 
 /* Complete Section */
