@@ -88,10 +88,6 @@ body {
 	float: right;
 }
 
-#topbar .topbar-col:not(:last-child) {
-	border-right: 1px solid #e5e5e5;
-}
-
 #topbar .topbar-col .col-top {
 	display: block;
 	height: 5vh;
