@@ -55,7 +55,8 @@ $(document).ready(function() {
 	// Datepicker
 	date.datepicker({
 		format: 'dd/mm/yyyy',
-		autoclose: true
+		autoclose: true,
+		disableTouchKeyboard: true
 	});
 	date.datepicker('update', new Date());
 	// Timepicker
