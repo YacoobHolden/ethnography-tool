@@ -1,70 +1,81 @@
 $(document).ready(function() {
 	/*
-	* Add utility functions
+	* Build helper objects
 	*/
-	// Functions to change pages and areas
-	var pages = $('.page'),
-		areas = $('.area');
-	function showPage(id){
-		pages.removeClass("active");
-		$("#"+id).addClass("active");
-	};
-	function showArea(id){
-		showPage("main");
-		areas.removeClass("active");
-		$("#"+id).addClass("active");
-	};
-	// Setup required objects
+	// UI Helper - shortcuts to various UI needs
+	ui = {
+		pages: pages = $('.page'),
+		areas: $('.area'),
+		showPage: function (id){
+			var self = this;
+			self.pages.removeClass("active");
+			$("#"+id).addClass("active");
+		},
+		showArea: function(id){
+			var self = this;
+			self.showPage("main");
+			self.areas.removeClass("active");
+			$("#"+id).addClass("active");
+		}
+	},
+	// Auth Helper - shortcuts to authentication functions
+	auth = {
+		// Loads current user and checks if we have token - @todo add error handling
+		getCurrentUser: function(callback){
+			var res = OAuth.create('google');
+			// Check we have stored token
+			if (res){
+				// Get and store the current user
+				res.me().done(function(me) {
+					currentUser = me;
+					callback && callback(true);
+				}).fail(function(err) {
+				  callback && callback(false);
+				});
+			} else {
+				callback && callback(false);
+			}
+		},
+		// Does oauth with google - @todo add error handling
+		googleOauth: function (callback){
+			var self = this;
+			OAuth.popup('google', {cache: true} ).done(function(oauthClient) {
+				// Store oauthClient
+				oauthClient = oauthClient;
+				// Update user
+				self.getCurrentUser(function(success){
+					if (success){
+						callback(true);
+					} else {
+						callback(false);
+					}
+				})
+			}).fail(function(err) {
+				callback(false);
+			});
+		}
+	},
+	// Request Helper
+	requests = {
+		
+	},
+	// Other helpers & stores
 	OAuth.initialize('utST7PNGeZd9L1lVvKUrwVHykrU');
 	var result = {},
 		currentUser,
-		oauthClient;
-	// Loads current user and checks if we have token - @todo add error handling
-	function getCurrentUser(callback){
-		var res = OAuth.create('google');
-		// Check we have stored token
-		if (res){
-			// Get and store the current user
-			res.me().done(function(me) {
-				currentUser = me;
-				callback && callback(true);
-			}).fail(function(err) {
-			  callback && callback(false);
-			});
-		} else {
-			callback && callback(false);
-		}
-	};
-	
-	// Does oauth with google - @todo add error handling
-	function googleOauth(callback){
-		OAuth.popup('google', {cache: true} ).done(function(oauthClient) {
-			// Store oauthClient
-			oauthClient = oauthClient;
-			// Update user
-			getCurrentUser(function(success){
-				if (success){
-					callback(true);
-				} else {
-					callback(false);
-				}
-			})
-		}).fail(function(err) {
-			callback(false);
-		});
-	};
-	
+		oauthClient;	
+
 	/*
 	* Setup Login Page
 	*/
 	// Add login button
 	$('#login-button').on("click",function(){
-		showPage('loader');
-		googleOauth(function(success){
+		ui.showPage('loader');
+		auth.googleOauth(function(success){
 			if (success){
-				showPage('main');
+				ui.showPage('main');
 			} else {
-				showPage('login');
+				ui.showPage('login');
 			}
 		});
 	});
@@ -106,7 +117,7 @@ $(document).ready(function() {
 		
 		areaChangers.removeClass("active");
 		$this.addClass("active");
-		showArea(toArea);
+		ui.showArea(toArea);
 	})
 
 	/*
@@ -133,12 +144,10 @@ $(document).ready(function() {
 					// Handle multi-options
 					if (allowMulti){
 						col.addClass("selected");
-
 						result[field][value] = true;
 					} else {
 						cols.removeClass("selected");
 						col.addClass("selected");
-			
 						result[field] = value;
 					}
 				} else {
@@ -148,7 +157,6 @@ $(document).ready(function() {
 						delete result[field][value];
 					} else {
 						col.removeClass("selected");
-
 						result[field] = undefined;
 					}
 				}
@@ -178,6 +186,9 @@ $(document).ready(function() {
 			return;
 		}
 		
+		// Convert to result expected by API
+		
+		
 		// Pass result to API
 		console.log(JSON.stringify(result));
 	});
@@ -185,11 +196,11 @@ $(document).ready(function() {
 	/*
 	* Main Page Logic
 	*/
-	getCurrentUser(function(success){
+	auth.getCurrentUser(function(success){
 		if (success){
-			showPage('main');
+			ui.showPage('main');
 		} else {
-			showPage('login');
+			ui.showPage('login');
 		}
 	});
 });
