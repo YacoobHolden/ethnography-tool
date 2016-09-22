@@ -67,7 +67,8 @@ body {
 }
 
 #topbar .topbar-col .col-top .icon {
-	font-size: 4vh;
+	font-size: 3.5vh;
+	color: grey;
 }
 
 #topbar input {
@@ -164,6 +165,21 @@ body {
 #complete .button-wrapper .done-button {
 	width: 20vw;
 	border-radius: 4px;
+}
+
+/* Loader Page */
+#loader {
+	background: #f6f7fa;
+}
+#loader .loader-area {
+    height: 100vh;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 100vh;
+}
+#loader .loader-area .loader-icon {
+	font-size: 20vh;
 }
 
 /* Mobile CSS */
