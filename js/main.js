@@ -1,6 +1,51 @@
 $(document).ready(function() {
-	// Object to store results
-	var result = {};
+	// Add utility functions
+	var pages = $('.page');
+	function showPage(id){
+		pages.removeClass("active");
+		$("#"+id).addClass("active");
+	};
+	
+	// Setup required objects
+	OAuth.initialize('utST7PNGeZd9L1lVvKUrwVHykrU');
+	var result = {},
+		currentUser,
+		oauthClient;
+	
+	// Loads current user and checks if we have token - @todo add error handling
+	function getCurrentUser(callback){
+		var res = OAuth.create('google');
+		// Check we have stored token
+		if (res){
+			// Get and store the current user
+			res.me().done(function(me) {
+				currentUser = me;
+				callback && callback(true);
+			}).fail(function(err) {
+			  callback && callback(false);
+			});
+		} else {
+			callback && callback(false);
+		}
+	};
+	
+	// Does oauth with google - @todo add error handling
+	function googleOauth(callback){
+		OAuth.popup('google', {cache: true} ).done(function(oauthClient) {
+			// Store oauthClient
+			oauthClient = oauthClient;
+			// Update user
+			getCurrentUser(function(success){
+				if (success){
+					callback(true);
+				} else {
+					callback(false);
+				}
+			})
+		}).fail(function(err) {
+			callback(false);
+		});
+	};
 	
 	// Setup topbar
 	var topbar = $('#topbar'),
@@ -92,5 +137,26 @@ $(document).ready(function() {
 		
 		// Pass result to API
 		console.log(JSON.stringify(result));
+	});
+	
+	// Add login button
+	$('#login-button').on("click",function(){
+		showPage('loader');
+		googleOauth(function(success){
+			if (success){
+				showPage('main');
+			} else {
+				showPage('login');
+			}
+		});
+	});
+	
+	// Main page logic
+	getCurrentUser(function(success){
+		if (success){
+			showPage('main');
+		} else {
+			showPage('login');
+		}
 	});
 });

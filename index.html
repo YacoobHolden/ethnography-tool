@@ -10,6 +10,7 @@
 		<link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
 		<link rel="stylesheet" href="style/style.css">
 		
+		<script src="js/oauth.min.js"></script>
 		<script src="js/jquery-1.9.1.min.js"></script>
 		<script src="js/bootstrap.js"></script>
 		<script src="js/bootstrap-datepicker.min.js"></script>
@@ -17,7 +18,22 @@
 		<script src="js/main.js"></script>
 	</head>
 	<body>
-		<div id="main" class="col-md-12">
+		<!-- Login page -->
+		<div id="login" class="page">
+			<div class="login-area">
+				<div class="icon-area">
+					<i class="fa fa-pencil-square login-icon"></i>
+				</div>
+				<div class="sub-text-area">
+					Ethnography Helper
+				</div>
+				<div class="button-area">
+					<button id="login-button" class="btn btn-success login-button">Sign in with Google <i class="fa fa-google"></i></button>
+				</div>
+			</div>
+		</div>
+		<!-- Main form page -->
+		<div id="main" class="page col-md-12">
 			<div id="topbar">
 				<div class="topbar-col date-col" data-value="date">
 					<div class="col-top">
@@ -274,7 +290,8 @@
 				</div>
 			</div>
 		</div>
-		<div id="loader" style="display:none;">
+		<!-- Loader page -->
+		<div id="loader" class="page active">
 			<div class="loader-area">
 				<i class="fa fa-spinner fa-pulse loader-icon"></i>
 			</div>
