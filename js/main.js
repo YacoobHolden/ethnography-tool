@@ -131,10 +131,28 @@ $(document).ready(function() {
 				contentType: 'application/json',
 				processData: false
 			}).done(function(returned) {
-  				callback && callback(returned);
+  				callback && callback(true);
 		  	}).fail(function(error) {
-  				callback && callback(error);
+  				callback && callback(false);
 			});
+		},
+		addNewEthnoResult: function(data, callback){
+			var self = this;
+			
+			/*$.ajax({
+				url: self.apiUrl + "/DataModels",
+				method: "POST",
+ 			   	data:  JSON.stringify(data),
+  			  	dataType: "json",
+				contentType: 'application/json',
+				processData: false
+			}).done(function(returned) {
+  				callback && callback(true);
+		  	}).fail(function(error) {
+  				callback && callback(false);
+			});*/
+				
+			callback && callback(true);
 		}
 	},
 	// Other helpers & stores
@@ -270,6 +288,23 @@ $(document).ready(function() {
 	var quill = new Quill('#editor', {
 		theme: 'snow',
 		placeholder: 'Enter your auth-ethnographic report.',
+	});
+	
+	// Handle done
+	$("#eth-done").on("click",function(){
+		// Get and validate results
+		var text = quill.getText();
+		
+		// Pass result to API
+		ui.showPage('loader');
+		requests.addNewEthnoResult(text, function(success){
+			ui.showPage('main');
+			if (success){
+				ui.flashOverlay("success");
+			} else {
+				ui.flashOverlay("error");
+			}
+		});
 	});
 	 
 	/*
