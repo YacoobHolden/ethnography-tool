@@ -265,6 +265,14 @@ $(document).ready(function() {
 	});
 	
 	/*
+	* Setup Ethno Page
+	*/
+	var quill = new Quill('#editor', {
+		theme: 'snow',
+		placeholder: 'Enter your auth-ethnographic report.',
+	});
+	 
+	/*
 	* Main Page Logic
 	*/
 	$.support.cors = true;

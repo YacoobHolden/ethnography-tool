@@ -68,6 +68,9 @@ body {
 	display: inline-block;
 	text-align: center;
 }
+#topbar .topbar-col.to-area {
+	cursor: pointer;
+}
 #topbar .topbar-col.date-col {
 	width: 30%;
 }
@@ -218,9 +221,46 @@ body {
 }
 
 /* Ethno Area */
-#ethno {
-	
+#ethno {}
+
+#ethno-form {
+	padding: 1vw 2vw 1vh 2vw;
 }
+
+#ethno-form .ql-toolbar {
+	background: #fff;
+}
+
+#editor {
+	background: #fff;
+}
+
+#editor .ql-editor {
+	height: 65vh;
+}
+
+#ethno-complete {
+	display: table;
+    table-layout: fixed;
+    width: 100%;
+    margin-top: 2vh;
+}
+
+#ethno-complete .button-wrapper {
+    display: table-cell;
+    text-align: center;
+}
+
+#ethno-complete .button-wrapper {
+    display: table-cell;
+    text-align: center;
+}
+
+#ethno-complete .button-wrapper .eth-done-button {
+	width: 20vw;
+}
+
+
 
 /* Help Area */
 #help {
