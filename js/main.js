@@ -250,10 +250,15 @@ $(document).ready(function() {
 				// Then update records list
 				self.updateRecordsList(records);
 				
+				// Click event to display list
+				$("#today-filter").click();
+				
 				callback && callback();
 			});
 		},
+		updateGraphs: function(records){
 		
+		},
 		updateRecordsList: function(records){
 			var self = this,
 				adaptors = self.adaptors,
@@ -535,6 +540,35 @@ $(document).ready(function() {
 				ui.flashOverlay("error");
 			}
 		});
+	});
+	
+	/*
+	* Setup stats page
+	*/
+	var statsArea = $('#stats'),
+		filterButtons = statsArea.find('.filter-buttons');
+	statsArea.find("#today-filter").on("click",function(){
+		filterButtons.removeClass("active");
+		$(this).addClass("active");
+		statsArea.find('.record').each(function(){
+			var $this = $(this),
+				date = $this.data("time"),
+				today = new Date(),
+				splitDate = date.split("T")[0].split("-");
+			
+			if (parseInt(today.getDate()) != parseInt(splitDate[2]) || parseInt(today.getMonth()+1) !== parseInt(splitDate[1]) 
+				|| parseInt(today.getFullYear()) !== parseInt(splitDate[0])){
+				$this.addClass("hidden");
+			} else {
+				$this.removeClass("hidden");
+			}
+		})
+	});
+	
+	statsArea.find("#all-filter").on("click",function(){
+		filterButtons.removeClass("active");
+		$(this).addClass("active");
+		statsArea.find('.record').removeClass("hidden");
 	});
 	 
 	/*

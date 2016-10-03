@@ -277,6 +277,20 @@ body {
 #stats {
 	padding: 5px;
 }
+
+#stats .filter-block {
+    padding: 5px;
+    font-size: 5vh;
+}
+	
+#stats .filter-block .left-block {
+	float: left;
+	display: inline-block;
+}
+#stats .filter-block .right-block {
+	float: right;
+	display: inline-block;
+}
 	
 #stats .area-block {
 	background: #fff;
@@ -311,6 +325,9 @@ body {
 }
 #stats .record-container .record.active {
 	background: #e5e5e5;
+}
+#stats .record-container .record.hidden {
+	display: none;
 }
 
 #stats .record-container .record .record-top {
@@ -426,6 +443,10 @@ body {
 	}
 	#stats .record-container .record .record-block.small-icons {
 		font-size: 1.2vh;
+	}
+	
+	#stats .filter-block {
+	    font-size: 3vh;
 	}
 }
 
