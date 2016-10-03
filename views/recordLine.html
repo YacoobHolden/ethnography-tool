@@ -1,0 +1,70 @@
+<div class="record" data-id="{{ID}}" data-usage="{{Usage}}" data-deviceType="{{Device_Type}}" data-people="{{People}}" data-place="{{Place}}" data-actions="none" data-time="{{Entry_DateTime}}">
+	<div class="record-top">
+		<div class="record-left">
+			<div class="record-block time-block">
+				{{prettyTime Entry_DateTime}}
+			</div>
+			<div class="record-block">
+				<i class="fa {{getIconForKey 'usage' Usage}}"></i>
+			</div>
+			<div class="record-block">
+				<i class="fa {{getIconForKey 'deviceType' Device_Type}}"></i>
+			</div>
+			<div class="record-block">
+				<i class="fa {{getIconForKey 'people' People}}"></i>
+			</div>
+			<div class="record-block">
+				<i class="fa {{getIconForKey 'place' Place}}"></i>
+			</div>
+			<div class="record-block small-icons">
+				{{getIconsForActions this}}
+			</div>
+		</div>
+		<div class="record-right showBottom">
+			<i class="fa fa-caret-down"></i>
+		</div>
+	</div>
+	<div class="record-bottom">
+		<div class="record-line">
+			<div class="record-left">
+				Time
+			</div>
+			<div class="record-right">
+				{{prettyTime Entry_DateTime}}
+			</div>
+		</div>
+		<div class="record-line">
+			<div class="record-left">
+				Usage
+			</div>
+			<div class="record-right">
+				{{getTextForKey "usage" Usage}}
+			</div>
+		</div>
+		<div class="record-line">
+			<div class="record-left">
+				Device Type
+			</div>
+			<div class="record-right">
+				{{getTextForKey "deviceType" Device_Type}}
+			</div>
+		</div>
+		<div class="record-line">
+			<div class="record-left">
+				People
+			</div>
+			<div class="record-right">
+				{{getTextForKey "people" People}}
+			</div>
+		</div>
+		<div class="record-line">
+			<div class="record-left">
+				Place
+			</div>
+			<div class="record-right">
+				{{getTextForKey "place" Place}}
+			</div>
+		</div>
+		{{getTextForActions this}}
+	</div>
+</div>

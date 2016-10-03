@@ -2,6 +2,134 @@ $(document).ready(function() {
 	/*
 	* Build helper objects
 	*/
+	// Extend Handlebars
+	var adaptors = {
+		deviceType: {
+			text: {
+				"mobile" : "Mobile",
+				"laptop" : "Laptop",
+				"pc" : "PC",
+				"tv" : "TV",
+				"console" : "Console",
+				"tablet" : "Tablet"
+			},
+			icons: {
+				"mobile" : "fa-mobile",
+				"laptop" : "fa-laptop",
+				"pc" : "fa-desktop",
+				"tv" : "fa-television",
+				"console" : "fa-gamepad",
+				"tablet" : "fa-tablet"
+			}
+		},
+		usage: {
+			text: {
+				"solo" : "Solo",
+				"sequential" : "Sequential",
+				"parallel" : "Parallel"
+			},
+			icons: {
+				"solo" : "fa-caret-right",
+				"sequential" : "fa-long-arrow-right",
+				"parallel" : "fa-exchange"
+			}
+		},
+		place: {
+			text: {
+				"home" : "Home",
+				"public" : "Public",
+				"Transit" : "Transit"
+			},
+			icons: {
+				"home" : "fa-home",
+				"public" : "fa-building",
+				"Transit" : "fa-bus"
+			}
+		},
+		people: {
+			text: {
+				"none" : "0",
+				"less" : "< 5",
+				"more" : "≥ 5"
+			},
+			icons: {
+				"none" : "fa-hand-rock-o",
+				"less" : "fa-user",
+				"more" : "fa-group"
+			}
+		},
+		actions: {
+			text: {
+				"Messaging": "Messaging",
+				"Gaming": "Gaming",
+				"Browsing": "Browsing",
+				"Social_Media": "Social Media",
+				"View_Media": "View Media",
+				"Work": "Work",
+				"Other": "Other"
+			},
+			icons: {
+				"Messaging": "fa-comment",
+				"Gaming": "fa-gamepad",
+				"Browsing": "fa-chrome",
+				"Social_Media": "fa-facebook-official",
+				"View_Media": "fa-youtube-square",
+				"Work": "fa-briefcase",
+				"Other": "fa-question-circle"
+			}
+		}
+	};
+	Handlebars.registerHelper('getTextForKey', function(type, key) {
+		if (!adaptors[type]["text"][key]){
+			return "Unknown"
+		} else {
+			return adaptors[type]["text"][key];
+		}
+	});
+	Handlebars.registerHelper('getIconForKey', function(type, key) {
+		if (!adaptors[type]["icons"][key]){
+			return "fa-question-circle"
+		} else {
+			return adaptors[type]["icons"][key];
+		}
+	});	
+	Handlebars.registerHelper('getTextForActions', function(record) {
+		var returnText = "",
+			first = true;
+		for (var key in record){
+			var text = adaptors.actions.text[key];
+			if (text && record[key]){
+				// Handle custom first value
+				if (first){
+					returnText = returnText + ' <div class="record-line"><div class="record-left">Actions</div><div class="record-right">' + text + '</div></div>';
+					first = false;
+				} else {
+					returnText = returnText + ' <div class="record-line"><div class="record-left"></div><div class="record-right">' + text + '</div></div>';
+				}
+			}
+		}
+	
+		return new Handlebars.SafeString(returnText);
+	});
+	Handlebars.registerHelper('getIconsForActions', function(record) {
+		var returnText = "";
+		for (var key in record){
+			var icon = adaptors.actions.icons[key];
+			if (icon && record[key]){
+				returnText = returnText + ' <i class="fa ' + icon + '"></i>';
+			}
+		}
+		
+		return new Handlebars.SafeString(returnText);
+	});
+	Handlebars.registerHelper('prettyTime', function(time) {
+		var splitText = time.split("T"),
+			splitTime = splitText[1].split(":"),
+			splitDate = splitText[0].split("-");
+		
+		return splitTime[0] + ":" + splitTime[1] + " " + splitDate[2] + "/" + splitDate[1];
+	});
+	
 	// UI Helper - shortcuts to various UI needs
 	ui = {
 		pages: pages = $('.page'),
@@ -22,6 +150,39 @@ $(document).ready(function() {
 				return "0"+value;
 			}
 			return value;
+		},
+		// Add templating via Handlebars
+		cache: {},
+		template: function(name, data){
+			var self = this,
+				_template,
+				result,
+				templateName = "views/" + name + ".html",
+				renderData = data ? data : {};
+
+			if(self.cache[templateName]){
+				_template = self.cache[templateName];
+			}
+			else {
+				// Load the local file using requests API
+				$.ajax({
+					url: templateName,
+					dataType: 'text',
+					async: false,
+					success: function(returned){
+						// Remove characters for jquery
+						result = returned.replace(/(\r\n|\n|\r|\t)/gm,'').trim();
+						_template = returned;
+					}
+				});
+			}
+
+			// Cache the template, then compile with data
+			self.cache[templateName] = _template;
+			_template = Handlebars.compile(_template);
+			result = _template(renderData);
+
+			return result;
 		},
 		// Gets result data from UI
 		getResults: function(){
@@ -77,6 +238,50 @@ $(document).ready(function() {
 			setTimeout(function(){
 				overlay.fadeOut("slow");
 			}, time);
+		},
+		updateStatistics: function(callback){
+			var self = this;
+			
+			requests.getFormHistory(function(records){
+				// First preprocess records
+				records.sort(function(a, b){
+					return new Date(b.Entry_DateTime) - new Date(a.Entry_DateTime);
+				});
+				// Then update records list
+				self.updateRecordsList(records);
+				
+				callback && callback();
+			});
+		},
+		
+		updateRecordsList: function(records){
+			var self = this,
+				adaptors = self.adaptors,
+				recordList = $('.record-container');
+			
+			// Clear records
+			recordList.empty();
+			// Then build HTML
+			for (var index in records){
+				var currentRecord = records[index],
+					recordLine = $(ui.template("recordLine", currentRecord));
+				recordList.append(recordLine);
+			}
+			// Then bind events
+			recordList.find('.record').on('click', function(){
+				var $this = $(this),
+					thisBottom = $this.find('.record-bottom');
+				
+				if ($this.hasClass("active")){
+					$this.removeClass("active")
+					thisBottom.removeClass('active');
+				} else {
+					recordList.find('.record-bottom').removeClass('active');
+					recordList.find('.record').removeClass('active');
+					thisBottom.addClass('active');
+					$this.addClass("active");
+				}
+			});
 		}
 	},
 	// Auth Helper - shortcuts to authentication functions
@@ -153,6 +358,20 @@ $(document).ready(function() {
 			});*/
 				
 			callback && callback(true);
+		},
+		getFormHistory: function(callback){
+			var self = this;
+			
+			$.ajax({
+				url: self.apiUrl + "/DataModels/" + currentUser.name,
+				method: "GET",
+  			  	dataType: "json",
+				contentType: 'application/json'
+			}).done(function(data) {
+  				callback && callback(data);
+		  	}).fail(function(error) {
+  				callback && callback(false);
+			});
 		}
 	},
 	// Other helpers & stores
@@ -213,8 +432,19 @@ $(document).ready(function() {
 		
 		areaChangers.removeClass("active");
 		$this.addClass("active");
-		ui.showArea(toArea);
-	})
+		
+		// Add special behaviour for stats 
+		if (toArea === "stats") {
+			ui.showPage('loader');
+			ui.updateStatistics(function(){
+				ui.showPage('main');
+				ui.showArea(toArea);
+			});
+		} else {
+			ui.showArea(toArea);
+		}
+		
+	});
 
 	/*
 	* Setup Form Area

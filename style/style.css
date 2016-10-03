@@ -294,9 +294,24 @@ body {
     line-height: 20px;
 }
 
-#stats .record-container {}
+#stats .record-container {
+    max-height: 80vh;
+    overflow-y: scroll;
+}
 
-#stats .record-container .record {}
+#stats .record-container .record {
+	border-radius: 4px;
+	background: white;
+}
+#stats .record-container .record:hover {
+	background: #e5e5e5;
+}
+#stats .record-container .record:not(:first-child) {
+	margin-top: 10px;
+}
+#stats .record-container .record.active {
+	background: #e5e5e5;
+}
 
 #stats .record-container .record .record-top {
 	line-height: 20px;
@@ -306,26 +321,51 @@ body {
 }
 
 #stats .record-container .record .record-block {
-	border-right: 1px solid #e5e5e5;
-	padding-right: 10px;
-	display: inline-block;
+    padding-right: 10px;
+    display: inline-block;
+    min-width: 30px;
+    text-align: center;
+}
+#stats .record-container .record .record-block:not(:last-child) {
+	border-right: 1px solid white;
+}
+
+#stats .record-container .record .record-block.small-icons {
+	font-size: 2vh;
+	vertical-align: top;
+}
+#stats .record-container .record .record-block.time-block {
+	font-size: 2vh;
+	vertical-align: top;
 }
 
 #stats .record-container .record .record-bottom {
 	display: none;
+	padding: 0px 10px 0px 10px;
+}
+#stats .record-container .record .record-bottom.active {
+	display: block;
 }
 
 #stats .record-container .record .record-left {
 	float: left;
 } 
 #stats .record-container .record .record-left i:not(:last-child) {
-	margin-right: 10px;
+	margin-right: 5px;
 } 
 
 #stats .record-container .record .record-right {
 	float: right;
-} 
+}
 
+#stats .record-container .record .record-line {
+	height: 5vh;
+	font-size: 2.5vh;
+}
+
+#stats .record-container .record .record-line:first-child {
+	margin-top: 10px;
+}
 
 /* Loader Page */
 #loader {
@@ -373,6 +413,19 @@ body {
 	#form .form-row .options .form-col .col-bottom .bottom-text.smaller {
 		font-size: 1vh;
 		vertical-align: top;
+	}
+	
+	#stats .record-container .record .record-top {
+	    font-size: 2.5vh;
+	}
+	#stats .record-container .record .record-block {
+	    min-width: 2vh;
+	}
+	#stats .record-container .record .record-block.time-block {
+		font-size: 1.5vh;
+	}
+	#stats .record-container .record .record-block.small-icons {
+		font-size: 1.2vh;
 	}
 }
 
